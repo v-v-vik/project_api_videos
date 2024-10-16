@@ -10,7 +10,7 @@ export const video1: VideoDBType = {
     minAgeRestriction: null,
     createdAt: "string",
     publicationDate: Date.now().toString(),
-    availableResolution: [Resolutions.P144, Resolutions.P240]
+    availableResolutions: [Resolutions.P144, Resolutions.P240]
 }
 
 export const dataset1: DBType = {
