@@ -68,32 +68,25 @@ export const updateVideoController = (req: Request<ParamType, BodyType>, res: Re
         res.sendStatus(404);
         return;
     }
-
+    let createDate = foundVideo.createdAt;
     let foundIndex = db.videos.indexOf(v => v.id === +req.params.id);
 
     const date = new Date()
     const videoResolutions:ResolutionsString[] = req.body.availableResolutions;
 
-    db.videos[foundIndex] = {...db.videos[foundIndex],
-       title: req.body.title,
-       author: req.body.author,
-       canBeDownloaded: req.body.canBeDownloaded,
-       minAgeRestriction: req.body.minAgeRestriction,
-       publicationDate: req.body.publicationDate,
-       availableResolutions: videoResolutions
-    }
+    // db.videos[foundIndex] = {...db.videos[foundIndex],...req.body}
 
-    // const replacementVideo = {
-    //     id: +req.params.id,
-    //     title: req.body.title,
-    //     author: req.body.author,
-    //     canBeDownloaded: req.body.canBeDownloaded,
-    //     minAgeRestriction: req.body.minAgeRestriction,
-    //     publicationDate: req.body.publicationDate,
-    //
-    //     availableResolutions: videoResolutions
-    // }
-    // db.videos.splice(foundIndex, 1, replacementVideo);
+    const replacementVideo = {
+        id: +req.params.id,
+        title: req.body.title,
+        author: req.body.author,
+        canBeDownloaded: req.body.canBeDownloaded,
+        minAgeRestriction: req.body.minAgeRestriction,
+        publicationDate: req.body.publicationDate,
+        createdAt: createDate,
+        availableResolutions: videoResolutions
+    }
+    db.videos.splice(foundIndex, 1, replacementVideo);
     console.log(db.videos);
 
     res
