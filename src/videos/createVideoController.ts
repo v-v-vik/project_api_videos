@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import {db, VideoDBType} from '../db/db';
-import {InputVideoType, OutputVideoType, Resolutions} from "../input-output-types/video-types";
+import {InputVideoType, OutputVideoType, Resolutions, ResolutionsString} from "../input-output-types/video-types";
 import {OutputErrorsType} from '../input-output-types/output-errors-type';
 
 
@@ -9,9 +9,9 @@ const inputValidation = (video: InputVideoType) => {
         errorsMessages: []
     }
 
-    if (!Array.isArray(video.availableResolution) || video.availableResolution.find(p => !Resolutions[p])) {
+    if (!Array.isArray(video.availableResolutions) || video.availableResolutions.find(p => !Resolutions[p])) {
         errors.errorsMessages.push({
-            message: "error", field: "availableResolution"
+            message: "error", field: "availableResolutions"
         })
     }
     if (typeof video.title !== "string" || !video.title || video.title.length > 40) {
@@ -38,7 +38,7 @@ export const createVideoController = (req: Request<any, any, InputVideoType>,
             .json(errors)
         return
     }
-     const videoResolutions:Resolutions[] = req.body.availableResolution;
+     const videoResolutions:ResolutionsString[] = req.body.availableResolutions;
 
      const date = new Date()
      date.setDate(date.getDate() + 1);
@@ -53,7 +53,7 @@ export const createVideoController = (req: Request<any, any, InputVideoType>,
         minAgeRestriction: null,
         createdAt: new Date().toISOString(),
         publicationDate: publicationDate,
-        availableResolution: videoResolutions
+        availableResolutions: videoResolutions
     };
 
     db.videos.push(newVideo);

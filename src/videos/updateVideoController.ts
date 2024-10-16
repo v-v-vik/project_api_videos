@@ -11,9 +11,9 @@ const inputValidation = (video: UpdateVideoInputModel) => {
         errorsMessages: []
     }
 
-    if (!Array.isArray(video.availableResolution) || !video.availableResolution.length || video.availableResolution.find(p => !Resolutions[p])) {
+    if (!Array.isArray(video.availableResolutions) || !video.availableResolutions.length || video.availableResolutions.find(p => !Resolutions[p])) {
         errors.errorsMessages.push({
-            message: "error", field: "availableResolution"
+            message: "error", field: "availableResolutions"
         })
     }
     if (!video.title || video.title.length > 40) {
@@ -26,13 +26,26 @@ const inputValidation = (video: UpdateVideoInputModel) => {
             message: "error", field: "author"
         })
     }
-    // if (video.minAgeRestriction > 18) {
-    //     errors.errorsMessages.push({
-    //         message: "error", field: "minAgeRestriction"
-    //     })
+    if (video.minAgeRestriction > 18) {
+        errors.errorsMessages.push({
+            message: "error", field: "minAgeRestriction"
+        })
+    }
+    if (typeof video.canBeDownloaded !== "boolean") {
+        errors.errorsMessages.push({
+            message: "error", field: "canBeDownloaded"
+        })
+    }
+    if (typeof video.publicationDate !== "string") {
+        errors.errorsMessages.push({
+            message: "error", field: "publicationDate"
+        })
+    }
 
-        return errors
-}
+     return errors;
+    }
+
+
 export const updateVideoController = (req: Request<ParamType, BodyType>, res: Response <any>) => {
     const errors: OutputErrorsType = inputValidation(req.body);
 
@@ -40,7 +53,7 @@ export const updateVideoController = (req: Request<ParamType, BodyType>, res: Re
         res
             .status(400)
             .json(errors)
-        return
+        return;
     }
 
     let foundVideo = db.videos.find(v => v.id === +req.params.id);
@@ -50,7 +63,7 @@ export const updateVideoController = (req: Request<ParamType, BodyType>, res: Re
     }
 
     const date = new Date()
-    const videoResolutions:Resolutions[] = req.body.availableResolution;
+    const videoResolutions:Resolutions[] = req.body.availableResolutions;
 
     foundVideo = {
         title: req.body.title,
@@ -58,7 +71,7 @@ export const updateVideoController = (req: Request<ParamType, BodyType>, res: Re
         canBeDownloaded: req.body.canBeDownloaded,
         minAgeRestriction: req.body.minAgeRestriction,
         publicationDate: date.toISOString(),
-        availableResolution: videoResolutions
+        availableResolutions: videoResolutions
     }
     res
         .sendStatus(204)

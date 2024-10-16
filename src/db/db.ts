@@ -1,4 +1,4 @@
-import {Resolutions} from "../input-output-types/video-types";
+import {Resolutions, ResolutionsString} from "../input-output-types/video-types";
 
 export type DBType = {
     videos: any[]
@@ -12,7 +12,7 @@ export type VideoDBType = {
     minAgeRestriction: null,
     createdAt: string,
     publicationDate: string,
-    availableResolution: Resolutions[]
+    availableResolutions: ResolutionsString[]
 }
 
 export const db: DBType = {
