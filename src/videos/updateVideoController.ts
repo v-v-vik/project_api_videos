@@ -36,11 +36,18 @@ const inputValidation = (video: UpdateVideoInputModel) => {
             message: "error", field: "canBeDownloaded"
         })
     }
-    if (typeof video.publicationDate !== "string") {
+
+    if (!video.publicationDate || new Date(Date.parse(video.publicationDate)).toISOString() !== video.publicationDate) {
         errors.errorsMessages.push({
             message: "error", field: "publicationDate"
         })
     }
+
+    // if (typeof video.publicationDate !== "string") {
+    //     errors.errorsMessages.push({
+    //         message: "error", field: "publicationDate"
+    //     })
+    // }
 
      return errors;
     }
