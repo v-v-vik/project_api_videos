@@ -62,10 +62,13 @@ export const updateVideoController = (req: Request<ParamType, BodyType>, res: Re
         return;
     }
 
+    let foundIndex = db.videos.indexOf(v => v.id === +req.params.id);
+
     const date = new Date()
     const videoResolutions:Resolutions[] = req.body.availableResolutions;
 
-    foundVideo = {
+    const replacementVideo = {
+        id: +req.params.id,
         title: req.body.title,
         author: req.body.author,
         canBeDownloaded: req.body.canBeDownloaded,
@@ -73,8 +76,11 @@ export const updateVideoController = (req: Request<ParamType, BodyType>, res: Re
         publicationDate: date.toISOString(),
         availableResolutions: videoResolutions
     }
+    db.videos.splice(foundIndex, 1, replacementVideo);
+    console.log(db.videos);
+
     res
         .sendStatus(204)
-        .json(foundVideo)
+
 }
 
