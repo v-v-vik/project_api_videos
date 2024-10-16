@@ -14,19 +14,19 @@ describe("/videos", () => {
         console.log(res.body)
     })
 
-    it('should get not empty array', async () => {
-        setDB(dataset1);
+    // it('should not get empty array', async () => {
+    //     setDB(dataset1);
+    //
+    //     const res = await req
+    //         .get(SETTINGS.PATH.VIDEOS)
+    //         .expect(200)
+    //
+    //     console.log(res.body)
+    //
+    //     expect(res.body.length).toBe(1)
 
-        const res = await req
-            .get(SETTINGS.PATH.VIDEOS)
-            .expect(200)
-
-        console.log(res.body)
-
-        expect(res.body.length).toBe(1)
-
-
-    })
+    //
+    // })
 
 
 

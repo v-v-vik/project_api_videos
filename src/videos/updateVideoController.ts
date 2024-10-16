@@ -69,7 +69,7 @@ export const updateVideoController = (req: Request<ParamType, BodyType>, res: Re
         return;
     }
     let createDate = foundVideo.createdAt;
-    let foundIndex = db.videos.indexOf(v => v.id === +req.params.id);
+    let foundIndex = db.videos.indexOf((v: VideoDBType) => v.id === +req.params.id);
 
     const date = new Date()
     const videoResolutions:ResolutionsString[] = req.body.availableResolutions;
