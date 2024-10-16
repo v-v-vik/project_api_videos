@@ -80,7 +80,7 @@ export const updateVideoController = (req: Request<ParamType, BodyType>, res: Re
         author: req.body.author,
         canBeDownloaded: req.body.canBeDownloaded,
         minAgeRestriction: req.body.minAgeRestriction,
-        publicationDate: date.toISOString(),
+        publicationDate: req.body.publicationDate,
         availableResolutions: videoResolutions
     }
     db.videos.splice(foundIndex, 1, replacementVideo);
