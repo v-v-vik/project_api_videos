@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import {db, VideoDBType} from '../db/db';
 import {BodyType, ParamType} from "./some";
-import {InputVideoType, Resolutions, UpdateVideoInputModel} from "../input-output-types/video-types";
+import {InputVideoType, Resolutions, ResolutionsString, UpdateVideoInputModel} from "../input-output-types/video-types";
 import {OutputErrorsType} from "../input-output-types/output-errors-type";
 
 
@@ -72,18 +72,28 @@ export const updateVideoController = (req: Request<ParamType, BodyType>, res: Re
     let foundIndex = db.videos.indexOf(v => v.id === +req.params.id);
 
     const date = new Date()
-    const videoResolutions:Resolutions[] = req.body.availableResolutions;
+    const videoResolutions:ResolutionsString[] = req.body.availableResolutions;
 
-    const replacementVideo = {
-        id: +req.params.id,
-        title: req.body.title,
-        author: req.body.author,
-        canBeDownloaded: req.body.canBeDownloaded,
-        minAgeRestriction: req.body.minAgeRestriction,
-        publicationDate: req.body.publicationDate,
-        availableResolutions: videoResolutions
+    db.videos[foundIndex] = {...db.videos[foundIndex],
+       title: req.body.title,
+       author: req.body.author,
+       canBeDownloaded: req.body.canBeDownloaded,
+       minAgeRestriction: req.body.minAgeRestriction,
+       publicationDate: req.body.publicationDate,
+       availableResolutions: videoResolutions
     }
-    db.videos.splice(foundIndex, 1, replacementVideo);
+
+    // const replacementVideo = {
+    //     id: +req.params.id,
+    //     title: req.body.title,
+    //     author: req.body.author,
+    //     canBeDownloaded: req.body.canBeDownloaded,
+    //     minAgeRestriction: req.body.minAgeRestriction,
+    //     publicationDate: req.body.publicationDate,
+    //
+    //     availableResolutions: videoResolutions
+    // }
+    // db.videos.splice(foundIndex, 1, replacementVideo);
     console.log(db.videos);
 
     res
