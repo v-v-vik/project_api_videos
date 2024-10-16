@@ -7,8 +7,7 @@
     "watch": "tsc -w",
     "dev": "nodemon --inspect dist/index.js",
     "test": "jest --runInBand --config ./__tests__/jest.config.js",
-    "jest:coverage": "jest -i --coverage",
-    "start": "node app.js"
+    "jest:coverage": "jest -i --coverage"
   },
   "dependencies": {
     "body-parser": "^1.20.3",
