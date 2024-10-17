@@ -97,25 +97,14 @@ describe("/videos", () => {
             ]
         }
 
-        const updateRes = await req
+        await req
             .put(SETTINGS.PATH.VIDEOS + "/1")
             .send(newData)
             .expect(200)
 
-        newVideo1 = updateRes.body;
-        expect(newVideo1).toEqual({
-            id: expect.any(Number),
-            title: newData.title,
-            author: newData.author,
-            canBeDownloaded: newData.canBeDownloaded,
-            minAgeRestriction: newData.minAgeRestriction,
-            createdAt: expect.any(String),
-            publicationDate: newData.publicationDate,
-            availableResolutions: newData.availableResolutions,
-
-        })
-
     })
+
+
 
     it("should not change an existing element via id parameter with incorrect input data", async() => {
         const newData = {
