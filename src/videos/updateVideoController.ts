@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
-import {db, VideoDBType} from '../db/db';
+import {db} from '../db/db';
 import {BodyType, ParamType} from "./some";
-import {InputVideoType, Resolutions, ResolutionsString, UpdateVideoInputModel} from "../input-output-types/video-types";
+import {Resolutions, ResolutionsString, UpdateVideoInputModel} from "../input-output-types/video-types";
 import {OutputErrorsType} from "../input-output-types/output-errors-type";
 
 
@@ -43,13 +43,7 @@ const inputValidation = (video: UpdateVideoInputModel) => {
         })
     }
 
-    // if (typeof video.publicationDate !== "string") {
-    //     errors.errorsMessages.push({
-    //         message: "error", field: "publicationDate"
-    //     })
-    // }
-
-     return errors;
+    return errors;
     }
 
 
@@ -69,15 +63,10 @@ export const updateVideoController = (req: Request<ParamType, BodyType>, res: Re
         return;
     }
     let createDate = foundVideo.createdAt;
-    let foundIndex = db.videos.indexOf((v: VideoDBType) => v.id === +req.params.id);
 
-    const date = new Date()
     const videoResolutions:ResolutionsString[] = req.body.availableResolutions;
 
-    // db.videos[foundIndex] = {...db.videos[foundIndex],...req.body}
-
-    const replacementVideo = {
-        id: +req.params.id,
+    const newData = {
         title: req.body.title,
         author: req.body.author,
         canBeDownloaded: req.body.canBeDownloaded,
@@ -86,11 +75,31 @@ export const updateVideoController = (req: Request<ParamType, BodyType>, res: Re
         createdAt: createDate,
         availableResolutions: videoResolutions
     }
-    db.videos.splice(foundIndex, 1, replacementVideo);
+
+    db.videos = db.videos.map(v=> v.id === +req.params.id ? {...v, ...newData} : v);
+
+
+    // db.videos[foundIndex] = {...db.videos[foundIndex],...newData}
+
+
+
+    // const replacementVideo = {
+    //     id: +req.params.id,
+    //     title: req.body.title,
+    //     author: req.body.author,
+    //     canBeDownloaded: req.body.canBeDownloaded,
+    //     minAgeRestriction: req.body.minAgeRestriction,
+    //     publicationDate: req.body.publicationDate,
+    //     createdAt: createDate,
+    //     availableResolutions: videoResolutions
+    // }
+    // db.videos.splice(foundIndex, 1, replacementVideo);
     console.log(db.videos);
 
     res
-        .sendStatus(204)
+        .sendStatus(200)
+
+
 
 }
 
